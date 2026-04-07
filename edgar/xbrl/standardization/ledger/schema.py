@@ -128,27 +128,57 @@ class ExtractionRun:
             self.is_valid = self.variance_pct <= self.validation_tolerance
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary for JSON serialization."""
+        """Convert to dictionary for JSON serialization.
+
+        IMPORTANT: This method must stay in sync with the dataclass field set.
+        The test at tests/xbrl/standardization/test_extraction_run_serialization.py
+        is the lock that prevents drift — if you add a new dataclass field,
+        either add it here or add it to TRANSIENT_FIELDS in that test with a
+        documented reason.
+
+        Keys are ordered by logical group (Identity first, including run_id which
+        is generated in __post_init__), not by dataclass field declaration order.
+
+        The ``validation_tolerance`` field is intentionally excluded (see the
+        field's own comment — it's a transient used only in __post_init__).
+        """
         return {
+            # Identity
             'run_id': self.run_id,
             'ticker': self.ticker,
             'metric': self.metric,
             'fiscal_period': self.fiscal_period,
             'form_type': self.form_type,
+            # Classification
             'archetype': self.archetype,
             'sub_archetype': self.sub_archetype,
+            # Strategy
             'strategy_name': self.strategy_name,
+            'concept': self.concept,
             'strategy_fingerprint': self.strategy_fingerprint,
             'strategy_params': self.strategy_params,
+            # Results
             'extracted_value': self.extracted_value,
             'reference_value': self.reference_value,
             'variance_pct': self.variance_pct,
             'is_valid': self.is_valid,
             'confidence': self.confidence,
+            # Metadata
             'run_timestamp': self.run_timestamp,
             'extraction_notes': self.extraction_notes,
             'components': self.components,
             'metadata': self.metadata,
+            # Provenance
+            'accession_number': self.accession_number,
+            'statement_role': self.statement_role,
+            'period_type': self.period_type,
+            'period_start': self.period_start,
+            'period_end': self.period_end,
+            'unit': self.unit,
+            'decimals': self.decimals,
+            'reference_source': self.reference_source,
+            'publish_confidence': self.publish_confidence,
+            # Golden master tracking
             'is_golden_candidate': self.is_golden_candidate,
             'golden_master_id': self.golden_master_id,
         }
