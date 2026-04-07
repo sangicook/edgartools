@@ -80,8 +80,11 @@ VALIDATION_COHORT = [
     "CAT",                                                       # Industrial
 ]
 
-# 50-company expansion cohort: first real stress test at scale
-EXPANSION_COHORT_50 = [
+# 50-company expansion cohort: first real stress test at scale.
+# Frozen as a tuple so tests and overnight loops can't accidentally mutate
+# the gate's cohort. Matches DETERMINISM_TEST_COHORT precedent (line 43).
+# See Consensus 024 Phase 1 Finding 4.
+EXPANSION_COHORT_50 = (
     # Tech (10)
     "AAPL", "MSFT", "GOOG", "AMZN", "META", "NVDA", "TSLA", "CRM", "ADBE", "INTC",
     # Banking/Finance (8)
@@ -96,7 +99,7 @@ EXPANSION_COHORT_50 = [
     "CAT", "HON", "GE", "DE", "RTX", "UPS",
     # Other (8)
     "V", "MA", "NEE", "T", "HD", "LOW", "NFLX", "AVGO",
-]
+)
 
 # Sub-cohorts for multi-agent parallel evaluation.
 # Balanced across sectors with hard gaps distributed:
@@ -130,8 +133,9 @@ SUB_COHORT_C = [
     "T", "HD", "LOW", "NFLX", "AVGO",     # Other
 ]
 
-# 100-company expansion cohort: production-scale stress test
-EXPANSION_COHORT_100 = EXPANSION_COHORT_50 + [
+# 100-company expansion cohort: production-scale stress test.
+# Frozen as a tuple — see EXPANSION_COHORT_50 comment above.
+EXPANSION_COHORT_100 = EXPANSION_COHORT_50 + (
     # Semiconductors (4)
     "AMD", "QCOM", "TXN", "MU",
     # Biotech/Pharma (4)
@@ -160,12 +164,12 @@ EXPANSION_COHORT_100 = EXPANSION_COHORT_50 + [
     "ABT", "MDT", "SYK",
     # Diversified (5)
     "BRK-B", "DHR", "SPGI", "MCO", "ITW",
-]
+)
 
 # 500-company expansion cohort: full S&P 500 scale
 # Extends EXPANSION_COHORT_100 with ~400 additional S&P 500 members.
 # Organized by GICS sector for balanced subcohort generation.
-EXPANSION_COHORT_500 = EXPANSION_COHORT_100 + [
+EXPANSION_COHORT_500 = EXPANSION_COHORT_100 + (
     # Information Technology (40)
     "AMAT", "LRCX", "KLAC", "MCHP", "CDNS", "SNPS", "ANSS", "FTNT",
     "CRWD", "ZS", "DDOG", "TEAM", "WDAY", "SPLK", "CTSH", "INTU",
@@ -255,7 +259,7 @@ EXPANSION_COHORT_500 = EXPANSION_COHORT_100 + [
     # Additional Misc (10)
     "VRSN", "GEN", "WEX", "LDOS", "SAIC",
     "CACI", "BAH", "KBR", "TTEK", "LECO",
-]
+)
 
 
 # =============================================================================
